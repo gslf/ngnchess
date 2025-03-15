@@ -4,13 +4,9 @@ using ngnchess.MoveDataStructure;
 public class MoveTreeTest
 {
 
-    // Aggiungere test relativi al colore della mossa
-
     private MoveNode _move1 = new MoveNode("e4", PieceColor.White);
     private MoveNode _move2 = new MoveNode("e5", PieceColor.Black);
     private MoveNode _move3 = new MoveNode("d4", PieceColor.White);
-    private MoveNode _move4 = new MoveNode("c4", PieceColor.White);
-    private MoveNode _move5 = new MoveNode("a4", PieceColor.Black);
 
     [Fact]
     public void AppendMove_EmptyTree_SetsRootAndCurrent() {

@@ -6,13 +6,11 @@ public class VariationLinesTest{
     private readonly MoveNode parentMove;
     private readonly MoveNode initialMove;
     private readonly MoveNode move2;
-    private readonly MoveNode move3;
 
     public VariationLinesTest() {
         parentMove = new MoveNode("e5", PieceColor.Black);
         initialMove = new MoveNode("e4", PieceColor.White);
         move2 = new MoveNode("Nf3", PieceColor.Black);
-        move3 = new MoveNode("Nc6", PieceColor.White);
     }
 
     [Fact]

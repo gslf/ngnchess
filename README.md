@@ -4,7 +4,7 @@
 
 ### 🧐 What's this?
 
-Welcome to **ngnchess** (pronounced *engine-chess*, clever, huh?), a C# library engineered for chess enthusiasts, developers, and AI overlords. Yes, we know there are countless chess libraries out there, but ours isn't just about chess, it's about engineering chess software the way it should be. Clean, efficient, maintainable, and just a tiny bit over-engineered (because why not?).
+Welcome to **ngnchess** (pronounced *engine-chess*, clever, huh?), a C# library engineered for chess enthusiasts, developers, and AI overlords. Yes, I know there are countless chess libraries out there, but ours isn't just about chess, it's about engineering chess software the way it should be. Clean, efficient, maintainable, and just a tiny bit over-engineered (because why not?).
 
 ### 🚀 Mission Statement
 
