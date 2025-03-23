@@ -21,7 +21,6 @@ public class MoveTree {
     /// </summary>
     public int Size { get; private set; } = 0;
 
-
     /// <summary>
     /// Appends a new move to the current sequence of moves.
     /// The new move must have a different color than the current move.
@@ -38,7 +37,7 @@ public class MoveTree {
             CurrentNode = newMove;
             Size = 1;
         } else {
-            if (newMove.Color == CurrentNode.Color)
+            if (newMove.Move.Piece.Color == CurrentNode.Move.Piece.Color)
                 throw new InvalidOperationException("The new move must have a different color than the current move.");
 
             CurrentNode.Next = newMove;

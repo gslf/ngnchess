@@ -1,23 +1,18 @@
-﻿using System.Text.RegularExpressions;
+﻿using ngnchess.Components;
+using System.Text.RegularExpressions;
 
 namespace ngnchess.MoveDataStructure;
 
 /// <summary>
-/// Represents a chess move using Portable Game Notation (PGN).
-/// The move is represented by the PGN name (e.g., "e4", "Nf3")
+/// Represents a node in a chess move sequence.
+/// The move is represented by an instance of the <see cref="Move"/> class
 /// and an optional comment providing further insights or context.
 /// </summary>
 public class MoveNode {
     /// <summary>
-    /// Get or init the move's PGN notation.
-    /// For example, "e4", "Nf3", etc.
+    /// Get or init the move.
     /// </summary>
-    public string Name { get; init; }
-
-    /// <summary>
-    /// Get or init the color of piece.
-    /// </summary>
-    public PieceColor Color { get; init; }
+    public Move Move { get; init; }
 
     /// <summary>
     /// Gets or sets an optional comment related to the move.
@@ -35,7 +30,7 @@ public class MoveNode {
     public MoveNode? Prev {
         get => _prev;
         set {
-            if (value != null && value.Color == this.Color)
+            if (value != null && value.Move.Piece.Color == this.Move.Piece.Color)
                 throw new InvalidOperationException("The previous move must have a different color as the current move.");
 
             if (value == this)
@@ -57,7 +52,7 @@ public class MoveNode {
     public MoveNode? Next {
         get => _next;
         set {
-            if (value != null && value.Color == this.Color)
+            if (value != null && value.Move.Piece.Color == this.Move.Piece.Color)
                 throw new InvalidOperationException("The next move must have a different color as the current move.");
 
             if (value == this)
@@ -91,56 +86,37 @@ public class MoveNode {
     /// </summary>
     public VariationLines Variations { get; init; }
 
-
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="MoveNode"/> class with the specified PGN name and comment.
+    /// Initializes a new instance of the <see cref="MoveNode"/> class with the specified move and comment.
     /// </summary>
-    /// <param name="name">The PGN notation representing the move.</param>
-    /// <param name="color">The piece color of the move.</param>
+    /// <param name="move">The move representing the chess move.</param>
     /// <param name="comment">An optional comment providing additional details about the move.</param>
     /// <param name="prev">The previous move node in the move sequence.</param>
     /// <param name="next">The next move node in the move sequence.</param>
     /// <param name="parent">The parent move node, if this move is a variation.</param>
-    /// <exception cref="ArgumentException">Thrown when the provided move name is invalid.</exception>
-    public MoveNode(string name, 
-                    PieceColor color, 
-                    string? comment = null, 
-                    MoveNode? prev = null, 
-                    MoveNode? next = null, 
+    public MoveNode(Move move,
+                    string? comment = null,
+                    MoveNode? prev = null,
+                    MoveNode? next = null,
                     MoveNode? parent = null) {
-        if (!_validateMove(name))
-            throw new ArgumentException($"Invalid move name: '{name}'", nameof(name));
-
-        Name = name;
+        Move = move;
         Comment = comment;
-        Color = color;
         Prev = prev;
         Next = next;
         Parent = parent;
-        Variations = new  VariationLines(this);
+        Variations = new VariationLines(this);
     }
 
     /// <summary>
     /// Returns a string that represents the current chess move.
     /// </summary>
     /// <returns>
-    /// A string representation of the move, including the piece color and PGN notation. 
+    /// A string representation of the move, including the move details. 
     /// If a comment is present, it is included in parentheses.
     /// For example: "White e4" or "Black Nf3 (Good move)".
     /// </returns>
     public override string ToString() {
-        return $"{Color} {Name}" + (Comment != null ? $" ({Comment})" : "");
-    }
-
-    private bool _validateMove(string move) {
-        string pattern = @"^(?:O-O(?:-O)?[+#]?|                              # Castling
-                        [KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|   # Piece moves
-                        [a-h]x?[a-h][1-8](?:=[QRBN])?[+#]?|                  # Pawn moves with capture
-                        [a-h][1-8](?:=[QRBN])?[+#]?)                         # Pawn moves without capture
-                        [!?]{0,2}$                                           # Optional annotations (!, ?, !!, !?, ?!)";
-
-        return Regex.IsMatch(move, pattern, RegexOptions.IgnorePatternWhitespace);
+        return $"{Move}" + (Comment != null ? $" ({Comment})" : "");
     }
 }
 

@@ -49,7 +49,7 @@ public class Variation {
         if (newMove == null)
             throw new ArgumentNullException(nameof(newMove));
 
-        if (newMove.Color == CurrentNode.Color)
+        if (newMove.Move.Piece.Color == CurrentNode.Move.Piece.Color)
             throw new InvalidOperationException("The new move must have a different color than the current move.");
 
         CurrentNode.Next = newMove;

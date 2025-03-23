@@ -1,12 +1,39 @@
 ﻿namespace ngnchess_test.MoveDataStructure;
 
+using ngnchess.Components;
 using ngnchess.MoveDataStructure;
-public class MoveTreeTest
-{
+public class MoveTreeTest {
+    private readonly Piece whitePawn;
+    private readonly Piece blackPawn;
+    private readonly Square fromE2;
+    private readonly Square toE4;
+    private readonly Square fromE7;
+    private readonly Square toE5;
+    private readonly Square fromD2;
+    private readonly Square toD4;
+    private readonly Move moveE2E4;
+    private readonly Move moveE7E5;
+    private readonly Move moveD2D4;
+    private readonly MoveNode moveNode1;
+    private readonly MoveNode moveNode2;
+    private readonly MoveNode moveNode3;
 
-    private MoveNode _move1 = new MoveNode("e4", PieceColor.White);
-    private MoveNode _move2 = new MoveNode("e5", PieceColor.Black);
-    private MoveNode _move3 = new MoveNode("d4", PieceColor.White);
+    public MoveTreeTest() {
+        whitePawn = new Piece(PieceType.Pawn, PieceColor.White);
+        blackPawn = new Piece(PieceType.Pawn, PieceColor.Black);
+        fromE2 = new Square('e', 2);
+        toE4 = new Square('e', 4);
+        fromE7 = new Square('e', 7);
+        toE5 = new Square('e', 5);
+        fromD2 = new Square('d', 2);
+        toD4 = new Square('d', 4);
+        moveE2E4 = new Move(whitePawn, fromE2, toE4);
+        moveE7E5 = new Move(blackPawn, fromE7, toE5);
+        moveD2D4 = new Move(whitePawn, fromD2, toD4);
+        moveNode1 = new MoveNode(moveE2E4);
+        moveNode2 = new MoveNode(moveE7E5);
+        moveNode3 = new MoveNode(moveD2D4);
+    }
 
     [Fact]
     public void AppendMove_EmptyTree_SetsRootAndCurrent() {
@@ -14,11 +41,11 @@ public class MoveTreeTest
         var tree = new MoveTree();
 
         // Act
-        tree.PushMove(_move1);
+        tree.PushMove(moveNode1);
 
         // Assert
-        Assert.Equal(_move1, tree.Root);
-        Assert.Equal(_move1, tree.CurrentNode);
+        Assert.Equal(moveNode1, tree.Root);
+        Assert.Equal(moveNode1, tree.CurrentNode);
     }
 
     [Fact]
@@ -26,14 +53,14 @@ public class MoveTreeTest
         // Arrange
         var tree = new MoveTree();
 
-        tree.PushMove(_move1);
-        tree.PushMove(_move2);
+        tree.PushMove(moveNode1);
+        tree.PushMove(moveNode2);
 
         // Assert
-        Assert.Equal(_move1, tree.Root);
-        Assert.Equal(_move2, tree.CurrentNode);
-        Assert.Equal(_move2, _move1.Next);
-        Assert.Equal(_move1, _move2.Prev);
+        Assert.Equal(moveNode1, tree.Root);
+        Assert.Equal(moveNode2, tree.CurrentNode);
+        Assert.Equal(moveNode2, moveNode1.Next);
+        Assert.Equal(moveNode1, moveNode2.Prev);
     }
 
     [Fact]
@@ -41,15 +68,15 @@ public class MoveTreeTest
         // Arrange
         var tree = new MoveTree();
 
-        tree.PushMove(_move1);
-        tree.PushMove(_move2);
+        tree.PushMove(moveNode1);
+        tree.PushMove(moveNode2);
 
         // Act
         tree.DropLastMove();
 
         // Assert
-        Assert.Equal(_move1, tree.CurrentNode);
-        Assert.Null(_move1.Next);
+        Assert.Equal(moveNode1, tree.CurrentNode);
+        Assert.Null(moveNode1.Next);
     }
 
     [Fact]
@@ -57,16 +84,16 @@ public class MoveTreeTest
         // Arrange
         var tree = new MoveTree();
 
-        tree.PushMove(_move1);
-        tree.PushMove(_move2);
-        tree.PushMove(_move3);
+        tree.PushMove(moveNode1);
+        tree.PushMove(moveNode2);
+        tree.PushMove(moveNode3);
 
         // Act
         tree.DropLastMoves(2);
 
         // Assert
-        Assert.Equal(_move1, tree.CurrentNode);
-        Assert.Null(_move1.Next);
+        Assert.Equal(moveNode1, tree.CurrentNode);
+        Assert.Null(moveNode1.Next);
     }
 
     [Fact]
@@ -74,8 +101,8 @@ public class MoveTreeTest
         // Arrange
         var tree = new MoveTree();
 
-        tree.PushMove(_move1);
-        tree.PushMove(_move2);
+        tree.PushMove(moveNode1);
+        tree.PushMove(moveNode2);
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => tree.DropLastMoves(3));

@@ -3,169 +3,127 @@ namespace ngnchess_test.MoveDataStructure;
 using System;
 using Xunit;
 using ngnchess.MoveDataStructure;
-
+using ngnchess.Components;
 
 public class MoveNodeTests {
-    [Fact]
-    public void Constructor_ValidMove_ShouldInitializeProperties() {
-        // Arrange
-        string name = "e4";
-        PieceColor color = PieceColor.White;
-        string comment = "Opening move";
+    private readonly Piece whitePawn;
+    private readonly Piece blackPawn;
+    private readonly Piece whiteKnight;
+    private readonly Square fromE2;
+    private readonly Square toE4;
+    private readonly Square fromE7;
+    private readonly Square toE5;
+    private readonly Square fromG1;
+    private readonly Square toF3;
+    private readonly Move moveE2E4;
+    private readonly Move moveE7E5;
+    private readonly Move moveG1F3;
 
-        // Act
-        MoveNode move = new MoveNode(name, color, comment);
-
-        // Assert
-        Assert.Equal(name, move.Name);
-        Assert.Equal(color, move.Color);
-        Assert.Equal(comment, move.Comment);
-
-        // Test Long Castling
-        MoveNode longCastling = new MoveNode("O-O-O", PieceColor.White, "Long castling");
-        Assert.Equal("O-O-O", longCastling.Name);
-        Assert.Equal(PieceColor.White, longCastling.Color);
-        Assert.Equal("Long castling", longCastling.Comment);
-
-        // Test Short Castling
-        MoveNode shortCastling = new MoveNode("O-O", PieceColor.White, "Short castling");
-        Assert.Equal("O-O", shortCastling.Name);
-        Assert.Equal(PieceColor.White, shortCastling.Color);
-        Assert.Equal("Short castling", shortCastling.Comment);
-
-        // Test Piece moves
-        MoveNode pieceMove = new MoveNode("Nf3", PieceColor.White, "Knight to f3");
-        Assert.Equal("Nf3", pieceMove.Name);
-        Assert.Equal(PieceColor.White, pieceMove.Color);
-        Assert.Equal("Knight to f3", pieceMove.Comment);
-
-        // Test Pawn moves with capture
-        MoveNode pawnCapture = new MoveNode("exd5", PieceColor.White, "Pawn captures on d5");
-        Assert.Equal("exd5", pawnCapture.Name);
-        Assert.Equal(PieceColor.White, pawnCapture.Color);
-        Assert.Equal("Pawn captures on d5", pawnCapture.Comment);
-
-        // Test Pawn moves without capture
-        MoveNode pawnMove = new MoveNode("e4", PieceColor.White, "Pawn to e4");
-        Assert.Equal("e4", pawnMove.Name);
-        Assert.Equal(PieceColor.White, pawnMove.Color);
-        Assert.Equal("Pawn to e4", pawnMove.Comment);
-
-        // Test annotations
-        MoveNode annotation1 = new MoveNode("e4!", PieceColor.White, "Good move");
-        Assert.Equal("e4!", annotation1.Name);
-        Assert.Equal(PieceColor.White, annotation1.Color);
-        Assert.Equal("Good move", annotation1.Comment);
-
-        MoveNode annotation2 = new MoveNode("e4?", PieceColor.White, "Bad move");
-        Assert.Equal("e4?", annotation2.Name);
-        Assert.Equal(PieceColor.White, annotation2.Color);
-        Assert.Equal("Bad move", annotation2.Comment);
-
-        MoveNode annotation3 = new MoveNode("e4!!", PieceColor.White, "Brilliant move");
-        Assert.Equal("e4!!", annotation3.Name);
-        Assert.Equal(PieceColor.White, annotation3.Color);
-        Assert.Equal("Brilliant move", annotation3.Comment);
-
-        MoveNode annotation4 = new MoveNode("e4!?", PieceColor.White, "Interesting move");
-        Assert.Equal("e4!?", annotation4.Name);
-        Assert.Equal(PieceColor.White, annotation4.Color);
-        Assert.Equal("Interesting move", annotation4.Comment);
-
-        MoveNode annotation5 = new MoveNode("e4?!", PieceColor.White, "Dubious move");
-        Assert.Equal("e4?!", annotation5.Name);
-        Assert.Equal(PieceColor.White, annotation5.Color);
-        Assert.Equal("Dubious move", annotation5.Comment);
+    public MoveNodeTests() {
+        whitePawn = new Piece(PieceType.Pawn, PieceColor.White);
+        blackPawn = new Piece(PieceType.Pawn, PieceColor.Black);
+        whiteKnight = new Piece(PieceType.Knight, PieceColor.White);
+        fromE2 = new Square('e', 2);
+        toE4 = new Square('e', 4);
+        fromE7 = new Square('e', 7);
+        toE5 = new Square('e', 5);
+        fromG1 = new Square('g', 1);
+        toF3 = new Square('f', 3);
+        moveE2E4 = new Move(whitePawn, fromE2, toE4);
+        moveE7E5 = new Move(blackPawn, fromE7, toE5);
+        moveG1F3 = new Move(whiteKnight, fromG1, toF3);
     }
 
     [Fact]
-    public void Constructor_InvalidMove_ShouldThrowArgumentException() {
+    public void Constructor_ValidMove_ShouldInitializeProperties() {
         // Arrange
-        string invalidName = "invalid";
-        PieceColor color = PieceColor.White;
+        string comment = "Opening move";
 
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => new MoveNode(invalidName, color));
+        // Act
+        MoveNode moveNode = new MoveNode(moveE2E4, comment);
+
+        // Assert
+        Assert.Equal(moveE2E4, moveNode.Move);
+        Assert.Equal(comment, moveNode.Comment);
     }
 
     [Fact]
     public void ToString_WithComment_ShouldReturnFormattedString() {
         // Arrange
-        MoveNode move = new MoveNode("e4", PieceColor.White, "Good move");
+        MoveNode moveNode = new MoveNode(moveE2E4, "Good move");
 
         // Act
-        string result = move.ToString();
+        string result = moveNode.ToString();
 
         // Assert
-        Assert.Equal("White e4 (Good move)", result);
+        Assert.Equal("WP from e2 to e4 (castling) (Good move)", result);
     }
-
 
     [Fact]
     public void Prev_SetValidPrev_ShouldSetPrev() {
         // Arrange
-        MoveNode move1 = new MoveNode("e4", PieceColor.White);
-        MoveNode move2 = new MoveNode("e5", PieceColor.Black);
+        MoveNode moveNode1 = new MoveNode(moveE2E4);
+        MoveNode moveNode2 = new MoveNode(moveE7E5);
 
         // Act
-        move2.Prev = move1;
+        moveNode2.Prev = moveNode1;
 
         // Assert
-        Assert.Equal(move1, move2.Prev);
+        Assert.Equal(moveNode1, moveNode2.Prev);
     }
 
     [Fact]
     public void Prev_SetInvalidColorPrev_ShouldThrowInvalidOperationException() {
         // Arrange
-        MoveNode move1 = new MoveNode("e4", PieceColor.White);
-        MoveNode move2 = new MoveNode("Nf3", PieceColor.White);
+        MoveNode moveNode1 = new MoveNode(moveE2E4);
+        MoveNode moveNode2 = new MoveNode(moveG1F3);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => move2.Prev = move1);
+        Assert.Throws<InvalidOperationException>(() => moveNode2.Prev = moveNode1);
     }
 
     [Fact]
     public void Next_SetValidNext_ShouldSetNext() {
         // Arrange
-        MoveNode move1 = new MoveNode("e4", PieceColor.White);
-        MoveNode move2 = new MoveNode("e5", PieceColor.Black);
+        MoveNode moveNode1 = new MoveNode(moveE2E4);
+        MoveNode moveNode2 = new MoveNode(moveE7E5);
 
         // Act
-        move1.Next = move2;
+        moveNode1.Next = moveNode2;
 
         // Assert
-        Assert.Equal(move2, move1.Next);
+        Assert.Equal(moveNode2, moveNode1.Next);
     }
 
     [Fact]
     public void Next_SetInvalidColorNext_ShouldThrowInvalidOperationException() {
         // Arrange
-        MoveNode move1 = new MoveNode("e4", PieceColor.White);
-        MoveNode move2 = new MoveNode("Nf3", PieceColor.White);
+        MoveNode moveNode1 = new MoveNode(moveE2E4);
+        MoveNode moveNode2 = new MoveNode(moveG1F3);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => move1.Next = move2);
+        Assert.Throws<InvalidOperationException>(() => moveNode1.Next = moveNode2);
     }
 
     [Fact]
     public void Parent_SetValidParent_ShouldSetParent() {
         // Arrange
-        MoveNode move1 = new MoveNode("e4", PieceColor.White);
-        MoveNode move2 = new MoveNode("e5", PieceColor.White);
+        MoveNode moveNode1 = new MoveNode(moveE2E4);
+        MoveNode moveNode2 = new MoveNode(moveE7E5);
 
         // Act
-        move2.Parent = move1;
+        moveNode2.Parent = moveNode1;
 
         // Assert
-        Assert.Equal(move1, move2.Parent);
+        Assert.Equal(moveNode1, moveNode2.Parent);
     }
 
     [Fact]
     public void Parent_SetSelfAsParent_ShouldThrowInvalidOperationException() {
         // Arrange
-        MoveNode move = new MoveNode("e4", PieceColor.White);
+        MoveNode moveNode = new MoveNode(moveE2E4);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => move.Parent = move);
+        Assert.Throws<InvalidOperationException>(() => moveNode.Parent = moveNode);
     }
 }
