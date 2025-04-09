@@ -7,9 +7,4 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Imaging\" />
-    <Folder Include="packages\" />
-  </ItemGroup>
-
 </Project>
