@@ -1,6 +1,8 @@
 ﻿namespace ngnchess_test.MoveDataStructure;
 
 using ngnchess.Components;
+using ngnchess.Models.Abstractions;
+using ngnchess.Models.Enum;
 using ngnchess.MoveDataStructure;
 public class MoveTreeTest {
     private readonly Piece whitePawn;
@@ -27,9 +29,9 @@ public class MoveTreeTest {
         toE5 = new Square('e', 5);
         fromD2 = new Square('d', 2);
         toD4 = new Square('d', 4);
-        moveE2E4 = new Move(whitePawn, fromE2, toE4);
-        moveE7E5 = new Move(blackPawn, fromE7, toE5);
-        moveD2D4 = new Move(whitePawn, fromD2, toD4);
+        moveE2E4 = new StandardMove(whitePawn, fromE2, toE4);
+        moveE7E5 = new StandardMove(blackPawn, fromE7, toE5);
+        moveD2D4 = new StandardMove(whitePawn, fromD2, toD4);
         moveNode1 = new MoveNode(moveE2E4);
         moveNode2 = new MoveNode(moveE7E5);
         moveNode3 = new MoveNode(moveD2D4);

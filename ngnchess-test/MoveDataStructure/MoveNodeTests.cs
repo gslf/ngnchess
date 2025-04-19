@@ -4,6 +4,8 @@ using System;
 using Xunit;
 using ngnchess.MoveDataStructure;
 using ngnchess.Components;
+using ngnchess.Models.Enum;
+using ngnchess.Models.Abstractions;
 
 public class MoveNodeTests {
     private readonly Piece whitePawn;
@@ -29,9 +31,9 @@ public class MoveNodeTests {
         toE5 = new Square('e', 5);
         fromG1 = new Square('g', 1);
         toF3 = new Square('f', 3);
-        moveE2E4 = new Move(whitePawn, fromE2, toE4);
-        moveE7E5 = new Move(blackPawn, fromE7, toE5);
-        moveG1F3 = new Move(whiteKnight, fromG1, toF3);
+        moveE2E4 = new StandardMove(whitePawn, fromE2, toE4);
+        moveE7E5 = new StandardMove(blackPawn, fromE7, toE5);
+        moveG1F3 = new StandardMove(whiteKnight, fromG1, toF3);
     }
 
     [Fact]
@@ -56,7 +58,7 @@ public class MoveNodeTests {
         string result = moveNode.ToString();
 
         // Assert
-        Assert.Equal("WP from e2 to e4 (castling) (Good move)", result);
+        Assert.Equal("WP from e2 to e4 (Good move)", result);
     }
 
     [Fact]

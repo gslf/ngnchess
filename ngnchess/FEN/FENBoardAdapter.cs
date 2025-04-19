@@ -1,4 +1,5 @@
 ﻿using ngnchess.Components;
+using ngnchess.Models.Enum;
 using System.Text;
 
 namespace ngnchess.FEN;

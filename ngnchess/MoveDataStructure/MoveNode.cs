@@ -1,4 +1,5 @@
 ﻿using ngnchess.Components;
+using ngnchess.Models.Abstractions;
 using System.Text.RegularExpressions;
 
 namespace ngnchess.MoveDataStructure;

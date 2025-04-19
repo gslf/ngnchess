@@ -1,4 +1,4 @@
-﻿namespace ngnchess.Components;
+﻿namespace ngnchess.Models.Enum;
 
 public enum CastlingRights{
     WhiteKingSide,

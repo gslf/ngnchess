@@ -1,4 +1,6 @@
 ﻿using ngnchess.Components;
+using ngnchess.Models.Abstractions;
+using ngnchess.Models.Enum;
 using ngnchess.MoveDataStructure;
 
 namespace ngnchess_test.MoveDataStructure;
@@ -30,9 +32,9 @@ public class VariationLinesTest {
         toE5 = new Square('e', 5);
         fromG1 = new Square('g', 1);
         toF3 = new Square('f', 3);
-        moveE2E4 = new Move(whitePawn, fromE2, toE4);
-        moveE7E5 = new Move(blackPawn, fromE7, toE5);
-        moveG1F3 = new Move(whiteKnight, fromG1, toF3);
+        moveE2E4 = new StandardMove(whitePawn, fromE2, toE4);
+        moveE7E5 = new StandardMove(blackPawn, fromE7, toE5);
+        moveG1F3 = new StandardMove(whiteKnight, fromG1, toF3);
         parentMove = new MoveNode(moveE7E5);
         initialMove = new MoveNode(moveE2E4);
         move2 = new MoveNode(moveG1F3);

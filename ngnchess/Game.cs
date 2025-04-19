@@ -1,5 +1,7 @@
 ﻿using ngnchess.Components;
-using ngnchess.Engine;
+using ngnchess.Models.Abstractions;
+using ngnchess.Models.Enum;
+using ngnchess.Models.Interfaces;
 using ngnchess.MoveDataStructure;
 
 namespace ngnchess;

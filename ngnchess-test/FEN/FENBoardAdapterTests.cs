@@ -1,5 +1,6 @@
 ﻿using ngnchess.Components;
 using ngnchess.FEN;
+using ngnchess.Models.Enum;
 using System.Reflection;
 
 

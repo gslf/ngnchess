@@ -1,4 +1,7 @@
-﻿namespace ngnchess.Components;
+﻿using ngnchess.Models.Abstractions;
+using ngnchess.Models.Enum;
+
+namespace ngnchess.Components;
 
 /// <summary>
 /// Represents the state of a chess board.
@@ -179,11 +182,15 @@ public class Board {
         // Remove the piece from the source position
         RemovePiece(sourceRow, sourceCol);
 
-        // Handle special move types
-        if (move.Type == MoveType.EnPassant && move.EnPassantTargetSquare != null) {
-            var (enPassantRow, enPassantCol) = move.EnPassantTargetSquare.ToArrayIndices();
-            if (IsValidPosition(enPassantRow, enPassantCol)) {
-                RemovePiece(enPassantRow, enPassantCol);
+        // Handle special move types using MoveType enum
+        if (move.Type == MoveType.EnPassant) {
+            // For EnPassantMove, we need to get the EnPassantTargetSquare
+            // Since we're using the Type property, we need to cast to access specific properties
+            if (move is Components.EnPassantMove enPassantMove) {
+                var (enPassantRow, enPassantCol) = enPassantMove.EnPassantTargetSquare.ToArrayIndices();
+                if (IsValidPosition(enPassantRow, enPassantCol)) {
+                    RemovePiece(enPassantRow, enPassantCol);
+                }
             }
         } else if (move.Type == MoveType.Castling) {
             // Handle castling
@@ -203,16 +210,14 @@ public class Board {
         }
 
         // Place the piece at the destination position
-        // Use promotion piece if provided, otherwise use the original piece
-        Piece pieceToPlace = move.Piece;
-        if (move.Promotion != null) {
-            // Only pawns can be promoted
-            if (move.Promotion != null && move.Piece.Type == PieceType.Pawn) {
-                pieceToPlace = move.Promotion.Value;
-            }
+        // For promotion, use the promotion piece if available
+        if (move is Components.PromotionMove promotionMove) {
+            SetPiece(destinationRow, destinationCol, promotionMove.Promotion);
+        } else {
+            // For standard moves and non-promotion special moves, place the original piece
+            SetPiece(destinationRow, destinationCol, move.Piece);
         }
 
-        SetPiece(destinationRow, destinationCol, pieceToPlace);
         return true;
     }
 

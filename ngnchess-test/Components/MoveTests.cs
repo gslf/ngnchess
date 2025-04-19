@@ -1,4 +1,5 @@
 ﻿using ngnchess.Components;
+using ngnchess.Models.Enum;
 
 namespace ngnchess_test.Components;
 
@@ -33,19 +34,19 @@ public class MoveTests {
     [Fact]
     public void StandardMove_ToString_ReturnsCorrectString() {
         // Arrange
-        var move = new Move(_pawnWhite, _fromSquare, _toSquare);
+        var move = new StandardMove(_pawnWhite, _fromSquare, _toSquare);
 
         // Act
         var result = move.ToString();
 
         // Assert
-        Assert.Equal("WP from a2 to a4 (castling)", result);
+        Assert.Equal("WP from a2 to a4", result);
     }
 
     [Fact]
     public void CastlingMove_ToString_ReturnsCorrectString() {
         // Arrange
-        var move = new Move(_kingWhite, new Square('e', 1), _castlingToSquare);
+        var move = new CastlingMove(_kingWhite, new Square('e', 1), _castlingToSquare);
 
         // Act
         var result = move.ToString();
@@ -57,7 +58,7 @@ public class MoveTests {
     [Fact]
     public void EnPassantMove_ToString_ReturnsCorrectString() {
         // Arrange
-        var move = new Move(_pawnWhite, _enPassantFromSquare, _enPassantToSquare, _enPassantTargetSquare);
+        var move = new EnPassantMove(_pawnWhite, _enPassantFromSquare, _enPassantToSquare, _enPassantTargetSquare);
 
         // Act
         var result = move.ToString();
@@ -69,12 +70,39 @@ public class MoveTests {
     [Fact]
     public void PromotionMove_ToString_ReturnsCorrectString() {
         // Arrange
-        var move = new Move(_pawnWhite, _promotionFromSquare, _promotionToSquare, _queenWhite);
+        var move = new PromotionMove(_pawnWhite, _promotionFromSquare, _promotionToSquare, _queenWhite);
 
         // Act
         var result = move.ToString();
 
         // Assert
         Assert.Equal("WP from a7 to a8 (promotion to WQ)", result);
+    }
+
+    [Fact]
+    public void Move_WithAnnotation_IncludesAnnotationInToString() {
+        // Arrange
+        var move = new StandardMove(_pawnWhite, _fromSquare, _toSquare, MoveAnnotation.GOOD);
+
+        // Act
+        var result = move.ToString();
+
+        // Assert
+        Assert.Equal("WP from a2 to a4 !", result);
+    }
+
+    [Fact]
+    public void Move_Type_ReturnsCorrectMoveType() {
+        // Arrange
+        var standardMove = new StandardMove(_pawnWhite, _fromSquare, _toSquare);
+        var castlingMove = new CastlingMove(_kingWhite, new Square('e', 1), _castlingToSquare);
+        var enPassantMove = new EnPassantMove(_pawnWhite, _enPassantFromSquare, _enPassantToSquare, _enPassantTargetSquare);
+        var promotionMove = new PromotionMove(_pawnWhite, _promotionFromSquare, _promotionToSquare, _queenWhite);
+
+        // Assert
+        Assert.Equal(MoveType.Standard, standardMove.Type);
+        Assert.Equal(MoveType.Castling, castlingMove.Type);
+        Assert.Equal(MoveType.EnPassant, enPassantMove.Type);
+        Assert.Equal(MoveType.Standard, promotionMove.Type);
     }
 }

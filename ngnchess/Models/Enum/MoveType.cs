@@ -1,4 +1,4 @@
-﻿namespace ngnchess.Components;
+﻿namespace ngnchess.Models.Enum;
 
 /// <summary>
 /// Enum representing the different types of chess moves.

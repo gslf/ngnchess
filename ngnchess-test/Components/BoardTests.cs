@@ -1,4 +1,5 @@
 ﻿using ngnchess.Components;
+using ngnchess.Models.Enum;
 
 namespace ngnchess_test.Components;
 public class BoardTests {
@@ -191,7 +192,7 @@ public class BoardTests {
         board.SetupStandardPosition();
 
         var piece = board.GetPiece(6, 0); // White pawn at a2
-        var move = new Move(piece!.Value, new Square('a', 2), new Square('a', 4));
+        var move = new StandardMove(piece!.Value, new Square('a', 2), new Square('a', 4), MoveAnnotation.GOOD);
 
         Assert.True(board.MakeMove(move));
         Assert.Null(board.GetPiece(6, 0)); // Original square is empty
@@ -208,7 +209,7 @@ public class BoardTests {
         board.SetPiece(7, 7, new Piece(PieceType.Rook, PieceColor.White));
 
         var piece = board.GetPiece(7, 4); // White king
-        var move = new Move(piece!.Value, new Square('e', 1), new Square('g', 1)) { Type = MoveType.Castling };
+        var move = new CastlingMove(piece!.Value, new Square('e', 1), new Square('g', 1));
 
         Assert.True(board.MakeMove(move));
         Assert.Null(board.GetPiece(7, 4)); // Original king square is empty
@@ -226,10 +227,12 @@ public class BoardTests {
         board.SetPiece(3, 0, new Piece(PieceType.Pawn, PieceColor.White)); // White pawn at a5
 
         var piece = board.GetPiece(3, 0); // White pawn
-        var move = new Move(piece!.Value, new Square('a', 5), new Square('b', 6)) {
-            Type = MoveType.EnPassant,
-            EnPassantTargetSquare = new Square('b', 5)
-        };
+        var move = new EnPassantMove(
+            piece!.Value,
+            new Square('a', 5),
+            new Square('b', 6),
+            new Square('b', 5)
+        );
 
         Assert.True(board.MakeMove(move));
         Assert.Null(board.GetPiece(3, 0)); // Original pawn square is empty
@@ -246,9 +249,13 @@ public class BoardTests {
         board.SetPiece(1, 0, new Piece(PieceType.Pawn, PieceColor.White)); // White pawn at a7
 
         var piece = board.GetPiece(1, 0); // White pawn
-        var move = new Move(piece!.Value, new Square('a', 7), new Square('a', 8)) {
-            Promotion = new Piece(PieceType.Queen, PieceColor.White)
-        };
+        var promotionPiece = new Piece(PieceType.Queen, PieceColor.White);
+        var move = new PromotionMove(
+            piece!.Value,
+            new Square('a', 7),
+            new Square('a', 8),
+            promotionPiece
+        );
 
         Assert.True(board.MakeMove(move));
         Assert.Null(board.GetPiece(1, 0)); // Original pawn square is empty

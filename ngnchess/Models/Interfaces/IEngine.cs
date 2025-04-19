@@ -1,4 +1,4 @@
-﻿namespace ngnchess.Engine;
+﻿namespace ngnchess.Models.Interfaces;
 
 public interface IEngine
 {

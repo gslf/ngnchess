@@ -1,4 +1,4 @@
-﻿using ngnchess.Components;
+﻿using ngnchess.Models.Enum;
 
 /// <summary>
 /// Represents a chess piece.
