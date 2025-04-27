@@ -24,8 +24,9 @@ public class PromotionMove : Move {
     /// <param name="to">The ending square of the move.</param>
     /// <param name="promotion">The piece to which the pawn is promoted.</param>
     /// <param name="annotation">Optional annotation.</param>
-    public PromotionMove(Piece piece, Square from, Square to, Piece promotion, MoveAnnotation? annotation = null)
-        : base(piece, from, to, annotation) {
+    /// <param name="comments">Optional comments about the move.</param>
+    public PromotionMove(Piece piece, Square from, Square to, Piece promotion, MoveAnnotation? annotation = null, string? comments = null)
+        : base(piece, from, to, annotation, comments) {
         Promotion = promotion;
     }
 

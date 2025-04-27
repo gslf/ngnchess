@@ -31,34 +31,20 @@ public class MoveNodeTests {
         toE5 = new Square('e', 5);
         fromG1 = new Square('g', 1);
         toF3 = new Square('f', 3);
-        moveE2E4 = new StandardMove(whitePawn, fromE2, toE4);
+        moveE2E4 = new StandardMove(whitePawn, fromE2, toE4, comments: "OpeningMove");
         moveE7E5 = new StandardMove(blackPawn, fromE7, toE5);
         moveG1F3 = new StandardMove(whiteKnight, fromG1, toF3);
     }
 
     [Fact]
     public void Constructor_ValidMove_ShouldInitializeProperties() {
-        // Arrange
-        string comment = "Opening move";
 
         // Act
-        MoveNode moveNode = new MoveNode(moveE2E4, comment);
+        MoveNode moveNode = new MoveNode(moveE2E4);
 
         // Assert
         Assert.Equal(moveE2E4, moveNode.Move);
-        Assert.Equal(comment, moveNode.Comment);
-    }
-
-    [Fact]
-    public void ToString_WithComment_ShouldReturnFormattedString() {
-        // Arrange
-        MoveNode moveNode = new MoveNode(moveE2E4, "Good move");
-
-        // Act
-        string result = moveNode.ToString();
-
-        // Assert
-        Assert.Equal("WP from e2 to e4 (Good move)", result);
+        Assert.Equal("OpeningMove", moveNode.Move.Comments);
     }
 
     [Fact]

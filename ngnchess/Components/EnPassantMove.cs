@@ -24,8 +24,9 @@ public class EnPassantMove : Move {
     /// <param name="to">The ending square of the move.</param>
     /// <param name="enPassantTargetSquare">The target square for en passant capture.</param>
     /// <param name="annotation">Optional annotation.</param>
-    public EnPassantMove(Piece piece, Square from, Square to, Square enPassantTargetSquare, MoveAnnotation? annotation = null)
-        : base(piece, from, to, annotation) {
+    /// <param name="comments">Optional comments about the move.</param>
+    public EnPassantMove(Piece piece, Square from, Square to, Square enPassantTargetSquare, MoveAnnotation? annotation = null, string? comments = null)
+        : base(piece, from, to, annotation, comments) {
         EnPassantTargetSquare = enPassantTargetSquare;
     }
 

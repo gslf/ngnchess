@@ -16,11 +16,6 @@ public class MoveNode {
     public Move Move { get; init; }
 
     /// <summary>
-    /// Gets or sets an optional comment related to the move.
-    /// </summary>
-    public string? Comment { get; set; }
-
-    /// <summary>
     /// Gets or sets the previous move node in the move sequence.
     /// The previous move must have a different color as the current move.
     /// </summary>
@@ -91,17 +86,14 @@ public class MoveNode {
     /// Initializes a new instance of the <see cref="MoveNode"/> class with the specified move and comment.
     /// </summary>
     /// <param name="move">The move representing the chess move.</param>
-    /// <param name="comment">An optional comment providing additional details about the move.</param>
     /// <param name="prev">The previous move node in the move sequence.</param>
     /// <param name="next">The next move node in the move sequence.</param>
     /// <param name="parent">The parent move node, if this move is a variation.</param>
     public MoveNode(Move move,
-                    string? comment = null,
                     MoveNode? prev = null,
                     MoveNode? next = null,
                     MoveNode? parent = null) {
         Move = move;
-        Comment = comment;
         Prev = prev;
         Next = next;
         Parent = parent;
@@ -117,7 +109,7 @@ public class MoveNode {
     /// For example: "White e4" or "Black Nf3 (Good move)".
     /// </returns>
     public override string ToString() {
-        return $"{Move}" + (Comment != null ? $" ({Comment})" : "");
+        return Move.ToString();
     }
 }
 

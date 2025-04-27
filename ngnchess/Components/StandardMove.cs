@@ -19,8 +19,9 @@ public class StandardMove : Move {
     /// <param name="from">The starting square of the move.</param>
     /// <param name="to">The ending square of the move.</param>
     /// <param name="annotation">Optional annotation.</param>
-    public StandardMove(Piece piece, Square from, Square to, MoveAnnotation? annotation = null)
-        : base(piece, from, to, annotation) {
+    /// <param name="comments">Optional comments about the move.</param>
+    public StandardMove(Piece piece, Square from, Square to, MoveAnnotation? annotation = null, string? comments = null)
+        : base(piece, from, to, annotation, comments) {
     }
 
     /// <summary>

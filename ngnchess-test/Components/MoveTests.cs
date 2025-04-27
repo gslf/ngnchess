@@ -105,4 +105,52 @@ public class MoveTests {
         Assert.Equal(MoveType.EnPassant, enPassantMove.Type);
         Assert.Equal(MoveType.Standard, promotionMove.Type);
     }
+
+    [Fact]
+    public void Move_WithComments_IncludesCommentsInToString() {
+        // Arrange
+        var move = new StandardMove(_pawnWhite, _fromSquare, _toSquare, MoveAnnotation.GOOD, "Opening move");
+
+        // Act
+        var result = move.ToString();
+
+        // Assert
+        Assert.Equal("WP from a2 to a4 ! [Opening move]", result);
+    }
+
+    [Fact]
+    public void Move_WithoutComments_ToStringExcludesComments() {
+        // Arrange
+        var move = new StandardMove(_pawnWhite, _fromSquare, _toSquare, MoveAnnotation.GOOD);
+
+        // Act
+        var result = move.ToString();
+
+        // Assert
+        Assert.Equal("WP from a2 to a4 !", result);
+    }
+
+    [Fact]
+    public void Move_WithEmptyComments_ToStringExcludesComments() {
+        // Arrange
+        var move = new StandardMove(_pawnWhite, _fromSquare, _toSquare, MoveAnnotation.GOOD, "");
+
+        // Act
+        var result = move.ToString();
+
+        // Assert
+        Assert.Equal("WP from a2 to a4 !", result);
+    }
+
+    [Fact]
+    public void Move_WithNullComments_ToStringExcludesComments() {
+        // Arrange
+        var move = new StandardMove(_pawnWhite, _fromSquare, _toSquare, MoveAnnotation.GOOD, null);
+
+        // Act
+        var result = move.ToString();
+
+        // Assert
+        Assert.Equal("WP from a2 to a4 !", result);
+    }
 }

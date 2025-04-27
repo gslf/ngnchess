@@ -30,6 +30,11 @@ public abstract class Move {
     public MoveAnnotation? Annotation { get; }
 
     /// <summary>
+    /// An optional comment about the move.
+    /// </summary>
+    public string? Comments { get; }
+
+    /// <summary>
     /// The type of the move.
     /// </summary>
     public abstract MoveType Type { get; }
@@ -41,11 +46,13 @@ public abstract class Move {
     /// <param name="from">The starting square of the move.</param>
     /// <param name="to">The ending square of the move.</param>
     /// <param name="annotation">Optional annotation.</param>
-    protected Move(Piece piece, Square from, Square to, MoveAnnotation? annotation = null) {
+    /// <param name="comments">Optional comments about the move.</param>
+    protected Move(Piece piece, Square from, Square to, MoveAnnotation? annotation = null, string? comments = null) {
         Piece = piece;
         From = from;
         To = to;
         Annotation = annotation;
+        Comments = comments;
     }
 
     /// <summary>
@@ -54,7 +61,8 @@ public abstract class Move {
     /// <returns>A string that represents the current move.</returns>
     public override string ToString() {
         string annotationString = Annotation.HasValue ? $" {Annotation.GetDescription()}" : "";
-        return $"{Piece} from {From} to {To}{GetMoveSpecificString()}{annotationString}";
+        string commentsString = !string.IsNullOrEmpty(Comments) ? $" [{Comments}]" : "";
+        return $"{Piece} from {From} to {To}{GetMoveSpecificString()}{annotationString}{commentsString}";
     }
 
     /// <summary>
